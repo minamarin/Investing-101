@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'home.js') }}"></script>
+
+<style>
+
+    #item-container{
+        font-size: 14px;
+    }
+
+    .row > div > a, div {
+        display: block;
+    }
+
+
+</style>
+
+<p class="prompt">
+    Most popular investing books this week: 
+</p>
+
+<div id="item-container" class="row">
+
+    
+</div>
+
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'add.js') }}"></script>
+
+<style>
+
+    .container {
+        font-size: 13px;
+        
+    }
+
+    label, input{
+        display: block;
+    }
+
+    input{
+        margin-bottom: 5px;
+
+        width: 400px;
+    }
+
+    textarea {
+        width: 400px;
+        height: 150px;
+    }
+
+    .new-line{
+        display: flex;
+    }
+
+    .btn-add {
+        font-size: 10px;
+        height: 20px;
+
+
+        padding-left: 3px; 
+        padding-right: 3px;  
+        padding-top: 2px;
+        padding-bottom: 2px;
+
+        margin-left: 5px;
+    }
+
+    .alert-danger {
+        /*width: 30%;*/
+        
+        padding: 2px;
+        margin-left: 3px;
+    }
+
+    .inline > * {
+        display: inline;
+    }
+
+    .inline {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    #add-submit{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+
+<p class="prompt">Add a new book</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div id="reminder"></div>
+
+            <form id="add-form">
+                <div>
+                    <label for="add-title"> Title </label>
+                    <div id="title-div" class="inline">
+                        <input id="add-title" name="title">
+                    </div>
+                </div>
+
+                <div class="author-group">
+                    <div class="new-line">
+                        <label for="add-author"> Author </label>
+                        <button type="button" class="btn-sm btn-add btn-default">Add</button>
+                    </div>
+                    
+                    <div id="author-div-1" class="inline">
+                        <input id="add-author-1" name="author">
+                    </div>
+
+                </div>
+
+
+
+                <div>
+                    <label for="add-publisher"> Publisher </label>
+                    <div id="publisher-div" class="inline">
+                        <input id="add-publisher" name="publisher">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="add-published-date"> Published Date </label>
+                    <div id="published-date-div" class="inline">
+                        <input type="date" id="add-published-date" name="published-date">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="add-image-link"> Image Link </label>
+                    <div id="image-link-div" class="inline">
+                        <input id="add-image-link" name="image-link">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="add-description"> Description </label>
+                    <div id="description-div" class="inline">
+                        <textarea id="add-description" name="description"> </textarea>
+                        <!-- <input id="add-description" name="description"> -->
+                    </div>
+                </div>
+
+                <div>
+                    <label for="add-isbn"> ISBN </label>
+                    <div id="isbn-div-1" class="inline">
+                        <input id="add-isbn-1" name="isbn">
+                        
+                    </div>
+                    <div id="isbn-div-2" class="inline">
+                        <input id="add-isbn-2" name="isbn">
+                        
+                    </div>
+                </div>
+
+                <div>
+                    <label for="add-length"> Length </label>
+                    <div id="length-div" class="inline">
+                        <input id="add-length" name="length">
+                    </div>
+                </div>
+
+                <div>
+                    <button id="add-submit" class="btn-sm btn-static-yes"> Submit </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

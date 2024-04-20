@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script>
+    let keyword = {{ keyword|tojson }};
+    let search_list = {{ search_list|tojson }};
+
+    function displayMatches(keyword, classString) {
+        let allTitles = document.querySelectorAll(classString);
+        console.log(allTitles);
+
+        for(let i = 0; i < allTitles.length; i++) {
+            let text = allTitles[i];
+            var regex = new RegExp(keyword, 'gi');
+            let response = text.innerText.replace(regex, function(str) {
+                return "<span style='background-color: yellow;'>" + str + "</span>";
+            });
+            text.innerHTML = response;
+        }
+    }
+    
+    $(document).ready(function() {
+        displayMatches(keyword, '.title-book');
+        displayMatches(keyword, '.publisher');
+        displayMatches(keyword, '.authors');
+    });
+</script>
+
+<style>
+    #item-container > a {
+        display: block;
+        font-size: 14px;
+    }
+
+    .item > * {
+        display: block;
+    }
+</style>
+
+<div id="item-container">
+    {% if search_list|length == 0 %}
+        <div class="prompt">
+            No results found for "{{ keyword }}"
+        </div>
+    {% else %}
+        <div class="prompt">
+            Showing {{ search_list|length }} results for "{{ keyword }}"
+        </div>
+        <div class="row">
+            {% for item in search_list %}
+                <div class="col-md-2 item">
+                    <a href="/view/{{ item.id }}">
+                        <img src="{{ item.volumeInfo.imageLinks.thumbnail }}" alt="book cover">
+                    </a>
+                    <a class="big-title title-book" href="/view/{{ item.id }}">
+                        {{ item.volumeInfo.title }}
+                    </a>
+                    <div>
+                        {% for author in item.volumeInfo.authors %}
+                            <a class="small-title authors" href="/view/{{ item.id }}"> {{ author }} </a>
+                        {% endfor %}
+                    </div>
+                    <a class="small-title publisher" href="/view/{{ item.id }}">
+                        {{ item.volumeInfo.publisher }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

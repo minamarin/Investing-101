@@ -1,0 +1,193 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'edit.js') }}"></script>
+
+<script>
+
+    let item = {{item|tojson }}
+
+    $(document).ready(function(){
+        $("#description").html(  item.volumeInfo.description ) 
+
+        var myHTML= item.volumeInfo.description
+
+        var strippedHtml = myHTML.replace(/<[^>]+>/g, '');
+        
+        /*console.log(strippedHtml);*/
+        $("#description").text(strippedHtml)
+        console.log('finished')
+    })
+    
+</script>
+
+<style>
+
+    .container {
+        font-size: 13px;
+    }
+
+    label, input{
+        display: block;
+    }
+
+    input{
+        margin-bottom: 5px;
+
+        width: 500px;
+    }
+
+    textarea {
+        width: 500px;
+        height: 150px;
+    }
+
+    .new-line{
+        display: flex;
+    }
+
+    .btn-add {
+        font-size: 10px;
+        height: 20px;
+
+
+        padding-left: 3px; 
+        padding-right: 3px;  
+        padding-top: 2px;
+        padding-bottom: 2px;
+
+        margin-left: 5px;
+    }
+
+    .alert-danger {
+        /*width: 30%;*/
+        
+        padding: 2px;
+        margin-left: 3px;
+        margin-bottom: 0px;
+    }
+
+    .inline > * {
+        display: inline;
+    }
+
+    .inline {
+        display: flex;
+        align-items: flex-start;
+    }
+
+
+    #add-discard{
+        margin-right: 10px;
+    }
+
+
+    #edit-btn-div{
+
+        display: flex;
+
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    
+
+</style>
+<p class="prompt">Edit a new book</p>
+
+<div class="container">
+    <div id="reminder"></div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src= {{item.volumeInfo.imageLinks.thumbnail}} alt="book cover">
+        </div>
+        <form id="edit-form" class="col-md-8" action="http://localhost:5000/view/{{item.id}}" method="post">
+            <div>
+                <label for="add-title"> Title </label>
+                <div id="title-div" class="inline">
+                    <input id="add-title" name="title" value="{{item.volumeInfo.title}}">
+                </div>
+            </div>
+
+            <div class="author-group">
+                <div class="new-line">
+                    <label for="add-author"> Author </label>
+                    <button type="button" class="btn-sm btn-add btn-default">Add</button>
+                </div>
+                        
+                {% for author in item.volumeInfo.authors %} 
+                
+                <div id="author-div-{{loop.index}}" class="inline">
+                    <input name="author" value = "{{author}}">
+                </div>
+                {% endfor %}
+            
+            </div>
+
+
+
+            <div>
+                <label for="add-publisher"> Publisher </label>
+                <div id="publisher-div" class="inline">
+                    <input id="add-publisher" name="publisher" value="{{item.volumeInfo.publisher}}">
+                </div>
+            </div>
+
+            <div>
+                <label for="add-published-date"> Published Date </label>
+                <div id="published-date-div" class="inline">
+                    <input type="date" id="add-published-date" name="published-date" value="{{item.volumeInfo.publishedDate}}">
+                </div>
+            </div>
+
+            <div>
+                <label for="add-image-link"> Image Link </label>
+                <div id="image-link-div" class="inline">
+                    <input readonly id="add-image-link" name="image-link" value="{{item.volumeInfo.imageLinks.thumbnail}}">
+                </div>
+            </div>
+
+            <div>
+                <label for="add-description"> Description </label>
+                <div id="description-div" class="inline">
+                    <textarea id="description" name="description"> </textarea>
+                </div>
+            </div>
+
+            <div>
+                <label for="add-isbn"> ISBN </label>
+
+                {% for entry in item.volumeInfo.industryIdentifiers %} 
+                <div id="isbn-div-{{loop.index}}" class="inline">   
+                    <input name="isbn" value="{{entry.identifier}}"> 
+                </div>
+                {% endfor %}    
+
+            </div>
+
+            <div>
+                <label for="add-length"> Length </label>
+                <div id="length-div" class="inline">
+                    <input id="add-length" name="length" value="{{item.volumeInfo.pageCount}}">
+                </div>
+            </div>
+
+<!-- dialog box -->
+
+            <div id="dialog" title="Confirmation">
+                Are you sure to discard the changes?
+                <button id="discard-no" class="btn-static-no">No</button>
+                <button id="discard-yes" class="btn-static-yes">Yes</button>
+            </div>
+
+            <div id="edit-btn-div">
+                <button id="add-discard" class="btn-sm btn-static-no"> Discard </button>
+                <button id="add-submit" class="btn-sm btn-static-yes" type="submit"> Submit </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

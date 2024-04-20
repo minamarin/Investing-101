@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename = 'view.js') }}"></script>
+
+<script>
+
+    /*console.log("html")*/
+    let item = {{ item|tojson }}
+    console.log(item)
+
+    $(document).ready(function(){
+        $("#description").html(  item.volumeInfo.description ) 
+
+        var myHTML= item.volumeInfo.description
+
+        var strippedHtml = myHTML.replace(/<[^>]+>/g, '');
+        
+        /*console.log(strippedHtml);*/
+        $("#description").text(strippedHtml)
+    })
+
+
+</script>
+
+<style>
+
+    .container-book {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    #book-title{
+        font-size: 20px;
+        font-weight: 700;
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .bold {
+        font-weight: 800;
+    }
+
+    #description {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    #btn-edit{
+        font-size: 10px;
+
+        padding: 3px;
+    }
+
+
+</style>
+
+<div class="container-book">
+
+    <div id="basic-info" class="row">
+        <div class="col-md-2">
+            <img src={{item.volumeInfo.imageLinks.thumbnail}} alt="book cover">
+        </div>
+        <div class="col-md-7">
+            <div id="book-title">
+                <div class="third-search">
+                    {{item.volumeInfo.title}}
+                </div>
+                <a href="/edit/{{ item.id }}">
+                    <button type="button" class="btn-sm btn-default" id="btn-edit"> Edit </button>
+                </a>
+            </div>
+
+            <div id="authors">         
+                <span>
+                    Author: 
+                </span>     
+                <span>
+                    
+                    {% for author in item.volumeInfo.authors %} 
+                        <span class="bold third-search"> {{author}} </span>
+                    {% endfor %}
+        
+                </span>
+            </div>
+
+            <div id="publishedDate"> 
+                <div>
+                    <span> Published Date: </span> 
+                    <span class="bold">{{ item.volumeInfo.publishedDate }} </span>
+                </div>
+            </div>
+
+            <div id="description"> 
+                <!-- description: {{ item.volumeInfo.description }} -->
+            </div>
+        </div>
+    </div>
+
+    <div class="bold">Bibliographic information</div>
+    <div id="detail-info" class="row">
+
+        <div class="col-md-2">
+            <div>Title</div>
+            <div>Author</div>
+            <div>Publisher</div>
+            <div>Published Date</div>
+            <div>ISBN</div>
+            <div>Length</div>
+        </div>
+
+        <div class="col-md-7">
+            <div>
+                {{item.volumeInfo.title}}
+            </div>
+
+            <div >            
+                <span>
+                    
+                    {% for author in item.volumeInfo.authors %} 
+                        <span> {{author}} </span>
+                    {% endfor %}
+        
+                </span>
+            </div>
+
+            <div class="third-search"> 
+                {{ item.volumeInfo.publisher }}
+            </div>
+
+            <div>
+                {{ item.volumeInfo.publishedDate }} 
+            </div>
+
+            <div> 
+                <span class="bold">
+                    {% for entry in item.volumeInfo.industryIdentifiers %} 
+                        {{entry.identifier}}  
+                    {% endfor %}    
+                </span> 
+            </div>
+
+            
+            <div> 
+                {{item.volumeInfo.pageCount }} Pages    
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
